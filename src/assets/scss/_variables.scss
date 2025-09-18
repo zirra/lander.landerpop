@@ -1,28 +1,13 @@
-$gold: #E8DF2A;
-$red: #E8052A;
-$blue: #31B1E6;
-$slate: #4F7D91;
-$olive: #666548;
-$brown: #66484D;
-$white: #ffffff;
+// Breakpoints
+$breakpoint-mobile: 480px;
+$breakpoint-tablet: 768px;
+$breakpoint-desktop: 1024px;
+$breakpoint-wide: 1280px;
 
-$main-bg-color: #dedede;
-$base-color: ($olive);
-$border-dark: rgba($brown, 0.88);
-$border-radius-lg: 1.6rem;
-$border-radius-md: .8rem;
-$border-radius-sm: .4rem;
-$primary-color: #000;
-$secondary-color: #FFF;
-$highlight-color: yellow;
-$background-light: $olive;
-$box-shadow:  6px 6px 5px rgba(0, 0, 0, 0.08);
+// Colors
+$color-primary: #2a72de;
+$color-secondary: #ff7f50;
+$color-gray: #666;
 
-:root {
-  --border-radius: #{$border-radius-md};
-  --main-bg-color: #{$main-bg-color};
-  --primary-color: #{$primary-color};
-  --secondary-color: #{$secondary-color};
-  --highlight-color: #{$highlight-color};
-  --box-shadow: #{$box-shadow};
-}
+// Spacing
+$spacing-unit: 1rem;
