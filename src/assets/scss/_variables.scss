@@ -1,0 +1,28 @@
+$gold: #E8DF2A;
+$red: #E8052A;
+$blue: #31B1E6;
+$slate: #4F7D91;
+$olive: #666548;
+$brown: #66484D;
+$white: #ffffff;
+
+$main-bg-color: #dedede;
+$base-color: ($olive);
+$border-dark: rgba($brown, 0.88);
+$border-radius-lg: 1.6rem;
+$border-radius-md: .8rem;
+$border-radius-sm: .4rem;
+$primary-color: #000;
+$secondary-color: #FFF;
+$highlight-color: yellow;
+$background-light: $olive;
+$box-shadow:  6px 6px 5px rgba(0, 0, 0, 0.08);
+
+:root {
+  --border-radius: #{$border-radius-md};
+  --main-bg-color: #{$main-bg-color};
+  --primary-color: #{$primary-color};
+  --secondary-color: #{$secondary-color};
+  --highlight-color: #{$highlight-color};
+  --box-shadow: #{$box-shadow};
+}
