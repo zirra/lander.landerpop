@@ -4,7 +4,7 @@
       :context="{url: 'https://landerpop.s3.us-east-1.amazonaws.com/lpuEkSePpwewsvqsCtzvqRMz/PrairieBandLogo.png'}"
       class="form-head"/>
     <h1>Sign In</h1>
-    <p>To access and participate in any of the offers and awards from our games a phone number and email is required.  Once added you will not be asked for this information again.</p>
+    <p>To access and participate in any of the offers and awards from our games a phone number and email is required.  Once added you will not be asked for this information again.</p><br/><br/>
     <input-field 
       @inputupdated="updateField"
       :context="{placeholder: 'Mobile Number', id: 'mobile'}"
