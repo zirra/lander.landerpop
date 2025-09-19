@@ -13,6 +13,9 @@ export default {
   components: { UiHead, UiGameCard },
   name: 'MainMenu',
   async mounted () {
+    if(!this.property) {
+      this.$router.push({name: 'error'})
+    }
   }
 }
 </script>

@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import SharedEntry from '@/views/SharedEntry'
 import ProspectEntry from '@/views/ProspectEntry'
 import MainMenu from '@/views/MainMenu'
+import ErrorView from '@/views/ErrorView'
 
 const routes = [
   {
@@ -23,6 +24,11 @@ const routes = [
     path: '/',
     name: 'main',
     component: MainMenu
+  },
+  {
+    path: '/error',
+    name: 'error',
+    component: ErrorView
   }
 ]
 
