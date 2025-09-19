@@ -1,12 +1,19 @@
 <template>
   <div class="main-menu">
-    main menu
+    <ui-head />
+    <ui-game-card />
   </div>
 </template>
 
 <script>
+import UiHead from '@/components/ui/UiHead.vue'
+import UiGameCard from '@/components/ui/UiGameCard.vue'
+
 export default {
-  name: 'MainMenu'
+  components: { UiHead, UiGameCard },
+  name: 'MainMenu',
+  async mounted () {
+  }
 }
 </script>
 

@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import SharedEntry from '@/views/SharedEntry'
 import ProspectEntry from '@/views/ProspectEntry'
+import MainMenu from '@/views/MainMenu'
 
 const routes = [
   {
@@ -17,6 +18,11 @@ const routes = [
     path: '/:propertyId',
     name: 'lead',
     component: ProspectEntry
+  },
+  {
+    path: '/',
+    name: 'main',
+    component: MainMenu
   }
 ]
 
