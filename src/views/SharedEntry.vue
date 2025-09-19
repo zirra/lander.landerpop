@@ -1,11 +1,13 @@
 <template>
   <div class="shared-entry">
-    shared -> {{ shareId}}
+    <signup-component />
   </div>
 </template>
 
 <script>
+import SignupComponent from '@/components/component/SignupComponent.vue'
 export default {
+  components: { SignupComponent },
   name: 'SharedEntry',
   data: () => ({
     shareId: null
