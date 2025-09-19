@@ -1,6 +1,6 @@
 <template>
   <div class="prospect-entry">
-    Prospect
+    Prospect - {{ property }} - {{ landerId }}
   </div>
 </template>
 
@@ -8,14 +8,20 @@
 export default {
   name: 'ProspectEntry',
   data: () => ({
-    propertyId: null,
-    landerId: null
+    propId: null,
+    lndrId: null
   }),
   async mounted () {
-    this.propertyId = this.$route.params['propertyId']
-    this.landerId = this.$route.params['landerId']
-
     
+    this.propId = this.$route.params['propertyId']
+    this.lndrId = this.$route.params['landerId']
+
+    this.setProperty(this.propId)
+    this.setLanderId(this.lndrId)
+    
+    if (this.property && this.landerId) {
+      this.$router.push({ name: 'main'})
+    }
   }
 }
 </script>

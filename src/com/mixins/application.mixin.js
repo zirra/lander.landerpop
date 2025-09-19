@@ -7,11 +7,13 @@ const core = {
   },
   computed: {
     ...mapGetters({
+      landerId: 'landerId',
       property: 'property'
     })
   },
   methods: {
     ...mapActions({
+      setLanderId: 'setLanderId',
       setProperty: 'setProperty'
     })
   }
