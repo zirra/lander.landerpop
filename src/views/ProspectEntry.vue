@@ -5,6 +5,8 @@
 </template>
 
 <script>
+import Storage from '@/com/system/storage'
+
 export default {
   name: 'ProspectEntry',
   data: () => ({
@@ -12,16 +14,29 @@ export default {
     lndrId: null
   }),
   async mounted () {
-    
-    this.propId = this.$route.params['propertyId']
-    this.lndrId = this.$route.params['landerId']
 
-    this.setProperty(this.propId)
-    this.setLanderId(this.lndrId)
-    
-    if (this.property && this.landerId) {
-      this.$router.push({ name: 'main'})
+    let tpropId = this.$route.params['propertyId']
+    let tlndrId = this.$route.params['landerId']
+
+    if (this.property) {
+      if(this.property != tpropId) {
+        Storage.saveData('pid', tpropId)
+        this.setProperty(tpropId)  
+      }
+    } else {
+      Storage.saveData('pid', tpropId)
     }
+
+    if (this.landerId) {
+      if(this.landerId != tlndrId) {
+        alert('user not consistent')
+        this.setLanderId(tlndrId)  
+      }
+    } else {
+      Storage.saveData('lid', tlndrId)
+      this.setLanderId(tlndrId)
+    }
+    console.log(this.property + ' ' + this.landerId)
   }
 }
 </script>

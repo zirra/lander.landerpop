@@ -1,3 +1,5 @@
+import Storage from '@/com/system/storage'
+
 const MUTATE_LANDERID = 'mutateLanderId'
 const MUTATE_PROPERTY = 'mutateProperty'
 
@@ -8,10 +10,20 @@ const state = {
 
 const getters = {
   landerId: (state) => {
-    return state.landerId
+    if(Storage.load('lid')) {
+      state.landerId = Storage.load('lid')
+      return state.landerId
+    } else {
+      return state.landerId
+    }
   },
   property: (state) => {
-    return state.property
+    if(Storage.load('pid')) {
+      state.property = Storage.load('pid')
+      return state.property
+    } else {
+      return state.property
+    }
   }
 }
 
