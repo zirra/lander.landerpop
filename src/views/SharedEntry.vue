@@ -12,6 +12,9 @@ export default {
   }),
   async mounted () {
     this.shareId = this.$route.params['shareId']
+    if(!this.shareId) {
+      console.log('no share no dice')
+    }
   }
 }
 </script>

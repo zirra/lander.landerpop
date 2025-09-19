@@ -21,10 +21,11 @@ export default {
     if (this.property) {
       if(this.property != tpropId) {
         Storage.saveData('pid', tpropId)
-        this.setProperty(tpropId)  
+        this.setProperty(tpropId)
       }
     } else {
       Storage.saveData('pid', tpropId)
+      this.setProperty(tpropId)
     }
 
     if (this.landerId) {

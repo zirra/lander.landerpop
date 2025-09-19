@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import SharedEntry from '@/views/SharedEntry'
+import PropertyEntry from '@/views/PropertyEntry'
 import ProspectEntry from '@/views/ProspectEntry'
 import MainMenu from '@/views/MainMenu'
 import ErrorView from '@/views/ErrorView'
@@ -11,6 +12,11 @@ const routes = [
     component: SharedEntry
   },
   {
+    path: '/shared',
+    name: 'sharefail',
+    component: SharedEntry
+  },
+  {
     path: '/:propertyId/:landerId',
     name: 'prospect',
     component: ProspectEntry
@@ -18,7 +24,7 @@ const routes = [
   {
     path: '/:propertyId',
     name: 'lead',
-    component: ProspectEntry
+    component: PropertyEntry
   },
   {
     path: '/',
