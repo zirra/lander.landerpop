@@ -1,7 +1,7 @@
 <template>
   <div class="ui-game-card">
     <image-item  
-      :context="{url: 'https://landerpop.s3.us-east-1.amazonaws.com/lpuEkSePpwewsvqsCtzvqRMz/PrairieBandLogo.png'}"/>
+      :context="context"/>
   </div>
 </template>
 
@@ -9,7 +9,11 @@
 import ImageItem from '../elements/ImageItem.vue'
 export default {
   components: { ImageItem },
-
+  props: {
+    context: {
+      type: Object
+    }
+  }
 }
 </script>
 

@@ -37,7 +37,9 @@ export default {
       Storage.saveData('lid', tlndrId)
       this.setLanderId(tlndrId)
     }
-    console.log(this.property + ' ' + this.landerId)
+    if(this.property && this.landerId) {
+      this.$router.push({name: 'main'})
+    }
   }
 }
 </script>

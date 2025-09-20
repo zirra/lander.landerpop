@@ -4,9 +4,11 @@
       :context="{url: 'https://landerpop.s3.us-east-1.amazonaws.com/lpuEkSePpwewsvqsCtzvqRMz/PrairieBandLogo.png'}"
       class="form-head"/>
 
-    <h1>Sign Up</h1>
+    <h1>{{ title }}</h1>
 
     <p><strong>How it works:</strong> Awards are linked to the mobile number that received the promotion. They can only be redeemed in person at the location that issued the promotion.</p>
+    <br/>
+    <p>Please provide the following information to continue and gain access to the games to win promotions.</p>
     <br/>
 
     <input-field 
@@ -36,6 +38,12 @@ import ImageItem from '@/components/elements/ImageItem.vue'
 export default {
   components: { ImageItem, InputField },
   name: 'SignupComponent',
+  props: {
+    title: {
+      type: String,
+      default: 'Signup'
+    }
+  },
   async mounted () {
 
   },

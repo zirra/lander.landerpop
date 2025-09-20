@@ -1,6 +1,7 @@
 <template>
   <div class="shared-entry">
-    <signup-component />
+    <signup-component 
+      :title="`Shared Signup`" />
   </div>
 </template>
 

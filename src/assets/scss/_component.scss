@@ -1,11 +1,13 @@
 .component-signup {
   width: 100%;
   text-align: center;
+  color: $font-main;
 
   p {
     margin: 2px 4px;
     font-size: 130%;
     text-align: left;
+    color: $font-main;
   }
 
   input[type="text"] {
