@@ -1,11 +1,16 @@
 <template>
   <div class="main-menu">
     <ui-head />
+    
+    <game-scratcher />
+
     <ui-promocard />
     <ui-game-card 
-      :context="{url: 'https://landerpop.s3.us-east-1.amazonaws.com/lpuEkSePpwewsvqsCtzvqRMz/wheelspin.png'}"/>
+      :context="{url: 'lpuEkSePpwewsvqsCtzvqRMz/wheelspin.png'}"/>
     <ui-game-card 
-      :context="{url: 'https://landerpop.s3.us-east-1.amazonaws.com/lpuEkSePpwewsvqsCtzvqRMz/booking.png'}"/>
+      :context="{url: 'lpuEkSePpwewsvqsCtzvqRMz/booking.png'}"/>
+    <ui-game-card 
+      :context="{url: 'lpuEkSePpwewsvqsCtzvqRMz/eventimage.png'}"/>
   </div>
 </template>
 
@@ -13,9 +18,10 @@
 import UiHead from '@/components/ui/UiHead.vue'
 import UiGameCard from '@/components/ui/UiGameCard.vue'
 import UiPromocard from '@/components/ui/UiPromocard.vue'
+import GameScratcher from '@/components/widgets/GameScratcher.vue'
 
 export default {
-  components: { UiHead, UiGameCard, UiPromocard },
+  components: { UiHead, UiGameCard, UiPromocard, GameScratcher },
   name: 'MainMenu',
   async mounted () {
     if(!this.property) {

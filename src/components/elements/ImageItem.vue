@@ -1,5 +1,5 @@
 <template>
-  <img :src="context.url" />
+  <img :src="`${imageRoot}${context.url}`" />
 </template>
 
 <script>

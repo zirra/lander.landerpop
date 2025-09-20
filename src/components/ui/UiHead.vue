@@ -1,7 +1,7 @@
 <template>
   <div class="ui-header">
     <image-item 
-      :context="{url: 'https://landerpop.s3.us-east-1.amazonaws.com/lpuEkSePpwewsvqsCtzvqRMz/PrairieBandLogo.png'}"/>
+      :context="{url: 'lpuEkSePpwewsvqsCtzvqRMz/PrairieBandLogo.png'}"/>
   </div>
 </template>
 
