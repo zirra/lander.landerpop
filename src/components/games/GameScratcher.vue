@@ -3,8 +3,8 @@
     
     <div class="scratcher">
       <canvas :id="scratcher.scratchId" class="myCanvas"
-        width="335"
-        height="335"
+        :width="`${windowWidth* .9}`"
+        :height="`${windowWidth * .9}`"
 
         :style="`margin:0;
           ${revealMe}`">
@@ -151,7 +151,7 @@ export default {
   visibility: hidden;
   margin: 0 auto;
   background-size: cover;
-  max-width: 100vw;
+  max-width: 100%;
   height: auto;
   cursor: url(https://landerpop.s3.us-east-1.amazonaws.com/gaming/cursor.png) 37.2 37.2;
 }
