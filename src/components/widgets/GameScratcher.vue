@@ -10,7 +10,8 @@
           ${revealMe}`">
       </canvas>
     </div>
-
+    <br/><br/>
+    <button @click="setMenuMode(true)">Close</button>
   </div>
 </template>
 

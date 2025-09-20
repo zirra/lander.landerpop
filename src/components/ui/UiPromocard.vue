@@ -1,6 +1,6 @@
 <template>
   <div class="ui-promo-card">
-    I am promotional Information
+    Promo Prize Offer - Link to Game
   </div>
 </template>
 

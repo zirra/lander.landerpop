@@ -10,10 +10,14 @@ const core = {
   },
   computed: {
     ...mapGetters({
+      menuMode: 'menuMode',
+      widget: 'widget'
     })
   },
   methods: {
     ...mapActions({
+      setMenuMode: 'setMenuMode',
+      setWidget: 'setWidget'
     })
   }
 }

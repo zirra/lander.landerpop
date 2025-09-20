@@ -1,11 +1,15 @@
 import Storage from '@/com/system/storage'
 
 const MUTATE_LANDERID = 'mutateLanderId'
+const MUTATE_MENUMODE = 'mutateMenuMode'
 const MUTATE_PROPERTY = 'mutateProperty'
+const MUTATE_WIDGET = 'mutateWidget'
 
 const state = {
   landerId: null,
-  property: null
+  property: null,
+  menuMode: true,
+  widget: 'game-scratcher'
 }
 
 const getters = {
@@ -17,6 +21,7 @@ const getters = {
       return state.landerId
     }
   },
+  menuMode: state => state.menuMode,
   property: (state) => {
     if(Storage.load('pid')) {
       state.property = Storage.load('pid')
@@ -24,15 +29,22 @@ const getters = {
     } else {
       return state.property
     }
-  }
+  },
+  widget: state => state.widget
 }
 
 const mutations = {
   mutateLanderId (state, lander) {
     state.landerId = lander
   },
+  mutateMenuMode (state, bool) {
+    state.menuMode = bool
+  },
   mutateProperty (state, prop) {
     state.property = prop
+  },
+  mutateWidget (state, w) {
+    state.widget = w
   }
 }
 
@@ -40,8 +52,14 @@ const actions = {
   setLanderId  ({ commit }, lander) {
     commit (MUTATE_LANDERID, lander)
   },
+  setMenuMode ({ commit }, bool) {
+    commit (MUTATE_MENUMODE, bool)
+  },
   setProperty ({ commit }, prop) {
     commit (MUTATE_PROPERTY, prop)
+  },
+  setWidget ({ commit }, w) {
+    commit(MUTATE_WIDGET, w)
   }
 }
 
