@@ -5,8 +5,18 @@
     <div v-if="menuMode">
       
       <ui-promocard 
-       @click="setWidget('ui-game-holder')"/>
+       @click="setWidget({
+          type: 'ui-game-holder',
+          game: 'game-scratcher'
+        })"/>
       
+      <ui-promocard 
+       @click="setWidget({
+          type: 'ui-game-holder',
+          game: 'game-spinner'
+        })"/>
+      
+
       <ui-game-card 
         :context="{url: 'lpuEkSePpwewsvqsCtzvqRMz/wheelspin.png'}"/>
       
@@ -18,7 +28,7 @@
       
     </div>
     <div v-else>
-      <component :is="widget" />
+      <component :is="widget.type" />
     </div>
 
   </div>

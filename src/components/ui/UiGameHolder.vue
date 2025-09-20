@@ -1,7 +1,8 @@
 <template>
   <div class="game-holder">
-    <p color="#fff">dgsdgasdg</p>
-    <game-scratcher />
+    <p color="#fff">{{widget}}</p>
+
+    <component :is="widget.game" />
   </div>
 </template>
 
