@@ -5,7 +5,7 @@
     <div v-if="menuMode">
       
       <ui-promocard 
-       @click="setMenuMode(false)"/>
+       @click="setWidget('ui-game-holder')"/>
       
       <ui-game-card 
         :context="{url: 'lpuEkSePpwewsvqsCtzvqRMz/wheelspin.png'}"/>
@@ -28,9 +28,10 @@
 import UiHead from '@/components/ui/UiHead.vue'
 import UiGameCard from '@/components/ui/UiGameCard.vue'
 import UiPromocard from '@/components/ui/UiPromocard.vue'
-import GameScratcher from '@/components/widgets/GameScratcher.vue'
+import UiGameHolder from '@/components/ui/UiGameHolder.vue'
+
 export default {
-  components: { UiHead, UiGameCard, UiPromocard, GameScratcher },
+  components: { UiHead, UiGameHolder, UiPromocard, UiGameCard },
   name: 'MainMenu',
   async mounted () {
     if(!this.property) {

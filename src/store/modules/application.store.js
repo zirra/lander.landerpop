@@ -59,6 +59,7 @@ const actions = {
     commit (MUTATE_PROPERTY, prop)
   },
   setWidget ({ commit }, w) {
+    commit(MUTATE_MENUMODE, false)
     commit(MUTATE_WIDGET, w)
   }
 }
