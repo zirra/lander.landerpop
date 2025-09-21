@@ -1,9 +1,11 @@
 <template>
   <div class="main-menu">
     
-    <ui-head />
+    
     <div v-if="menuMode">
-      
+
+      <ui-head />
+
       <ui-promocard 
        @click="setWidget({
           type: 'ui-game-holder',
@@ -28,6 +30,7 @@
       
     </div>
     <div v-else>
+      <ui-head :myclass="`ui-header-small`"/>
       <component :is="widget.type" />
     </div>
 

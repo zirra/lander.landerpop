@@ -1,8 +1,7 @@
 <template>
   <div class="game-holder">
-    <p color="#fff">{{widget}}</p>
-
     <component :is="widget.game" />
+    <p color="#fff">{{widget}}</p>
   </div>
 </template>
 
