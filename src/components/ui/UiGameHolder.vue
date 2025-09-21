@@ -1,7 +1,11 @@
 <template>
   <div class="game-holder">
+    <p v-if="!optIn">To play the game and be capabale of receiving a promotion or reward, you will need to fill out and submit a valid mobile and email.</p>
+    <p v-else></p>
+    <br/>
     <component :is="widget.game" v-if="optIn"/>
     <component :is="`signup-block`" v-else/>
+    
     <p color="#fff">{{widget}} {{ optIn }}</p>
   </div>
 </template>
