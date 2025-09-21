@@ -11,19 +11,8 @@
     <p>Please provide the following information to continue and gain access to the games to win promotions.</p>
     <br/>
 
-    <input-field 
-      @inputupdated="updateField"
-      :context="{placeholder: 'Mobile Number', id: 'mobile'}"
-      key="mobile1" />
-    <input-field 
-      @inputupdated="updateField"
-      :context="{placeholder: 'Email Address', id: 'email'}"
-      key="email1" />
+    <signup-block />
 
-    <br/>
-    <button>SUBMIT</button>
-    <br/><br/>
-    
     <p><strong>“Standard terms apply. Non-transferable. No cash value. See full T&Cs.”</strong></p>
     <br/>
     <p class="note">For the complete legal <a href="https://landerpop.s3.us-east-1.amazonaws.com/legal/TermsConditions.html" target="_blank">Terms & Conditions</a>, please visit our website.</p>
@@ -33,10 +22,10 @@
 </template>
 
 <script>
-import InputField from '@/components/elements/InputField.vue'
 import ImageItem from '@/components/elements/ImageItem.vue'
+import SignupBlock from './SignupBlock.vue'
 export default {
-  components: { ImageItem, InputField },
+  components: { ImageItem, SignupBlock },
   name: 'SignupComponent',
   props: {
     title: {
@@ -45,12 +34,6 @@ export default {
     }
   },
   async mounted () {
-
-  },
-  methods: {
-    updateField (e) {
-      console.log(e)
-    }
   }
 }
 </script>
