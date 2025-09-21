@@ -10,12 +10,13 @@
       key="email1" />
 
     <br/>
-    <button>SUBMIT</button>
+    <button @click="setSignin">SUBMIT</button>
     <br/><br/>
   </div>
 </template>
 
 <script>
+import Storage from '@/com/system/storage'
 import InputField from '../elements/InputField.vue'
 
 export default {
@@ -24,6 +25,10 @@ export default {
   methods: {
     updateField (e) {
       console.log(e)
+    },
+    setSignin () {
+      Storage.saveData('opt', true)
+      this.setOptin(true)
     }
   }
 }
