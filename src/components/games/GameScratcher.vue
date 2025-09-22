@@ -33,6 +33,9 @@ export default {
     ticket: null,
     mygrid: [],
     revealMe: null,
+    scratchedCells: new Set(),
+    gridSize: 35,
+    isComplete: false,
 
   }),
   async mounted () {
@@ -68,6 +71,8 @@ export default {
     initTicket () {
       this.revealCanvas.save()
       this.brushRadius = (this.reveal.width / 100) * 10
+      this.scratchedCells.clear()
+      this.isComplete = false
       console.log(this.brushRadius)
     },
 
@@ -87,6 +92,7 @@ export default {
         
         this.img = new Image()
         this.img.alt = `Scratcher Overlay ${this.scratcher.scratchId}`
+        
         this.img.onload = () => {
           let prize = `${this.imageRoot}lpuEkSePpwewsvqsCtzvqRMz/reveal.png`
     
@@ -101,7 +107,7 @@ export default {
       }
     },
 
-    detectLeftButton: (event) => {
+    detectLeftButton (event) {
       if ('buttons' in event) {
         return event.buttons === 1
       } else if ('which' in event) {
@@ -111,18 +117,22 @@ export default {
       }
 		},
 
-		getBrushPos: (xRef, yRef, revealRect, reveal) => {
+		getBrushPos (xRef, yRef, revealRect, reveal) {
       return {
         x: Math.floor((xRef - revealRect.left) / (revealRect.right - revealRect.left) * reveal.width),
         y: Math.floor((yRef - revealRect.top) / (revealRect.bottom - revealRect.top) * reveal.height)
       };
 		},
 
-    drawDotMouse: (mouseX,mouseY,revealCanvas, brushRadius, rect) => {
+    drawDotMouse (mouseX,mouseY,revealCanvas, brushRadius, rect) {
       if(rect) { /*do nothing */}
       if(mouseX >= 0 && mouseX <= 50 && mouseY >= 0 && mouseY <= 50) {
         console.log('top corner')
       }
+      
+      // Mark grid cells affected by this brush stroke
+      this.markGridCells(mouseX, mouseY - 50, brushRadius)
+      
       revealCanvas.beginPath()
       revealCanvas.arc(mouseX, mouseY-50, brushRadius, 0, 2*Math.PI, true)
       revealCanvas.fillStyle = '#000'
@@ -131,51 +141,70 @@ export default {
       this.checkScratchProgress()
 		},
 
-    drawDotTouch: (mouseX,mouseY,revealCanvas, brushRadius, rect) => {
+    drawDotTouch (mouseX,mouseY,revealCanvas, brushRadius, rect) {
       if(rect) { /*do nothing */}
       if(mouseX >= 0 && mouseX <= 50 && mouseY >= 0 && mouseY <= 50) {
         console.log('top corner')
       }
+      
+      // Mark grid cells affected by this brush stroke
+      this.markGridCells(mouseX, mouseY, brushRadius)
+      
       revealCanvas.beginPath()
       revealCanvas.arc(mouseX, mouseY, brushRadius, 0, 2*Math.PI, true)
       revealCanvas.fillStyle = '#000'
       revealCanvas.globalCompositeOperation = "destination-out"
       revealCanvas.fill()
       this.checkScratchProgress()
-		}
-  },
-  checkScratchProgress() {
-    const imageData = this.revealCanvas.getImageData(0, 0, this.reveal.width, this.reveal.height)
-    const pixels = imageData.data
-    let transparentPixels = 0
-    let totalPixels = pixels.length / 4 // Each pixel has 4 values (RGBA)
+		},
 
-    // Count transparent pixels (alpha = 0)
-    for (let i = 3; i < pixels.length; i += 4) {
-      if (pixels[i] === 0) { // Alpha channel is 0 (transparent)
-        transparentPixels++
+    markGridCells(centerX, centerY, brushRadius) {
+      const cellWidth = this.reveal.width / this.gridSize
+      const cellHeight = this.reveal.height / this.gridSize
+      
+      // Calculate which grid cells are affected by the brush circle
+      const minX = Math.max(0, centerX - brushRadius)
+      const maxX = Math.min(this.reveal.width, centerX + brushRadius)
+      const minY = Math.max(0, centerY - brushRadius)
+      const maxY = Math.min(this.reveal.height, centerY + brushRadius)
+      
+      const startCol = Math.floor(minX / cellWidth)
+      const endCol = Math.floor(maxX / cellWidth)
+      const startRow = Math.floor(minY / cellHeight)
+      const endRow = Math.floor(maxY / cellHeight)
+      
+      for (let row = startRow; row <= endRow; row++) {
+        for (let col = startCol; col <= endCol; col++) {
+          const cellId = `${row}-${col}`
+          this.scratchedCells.add(cellId)
+        }
       }
+    },
+
+    checkScratchProgress() {
+      const totalCells = this.gridSize * this.gridSize
+      const scratchedPercentage = (this.scratchedCells.size / totalCells) * 100
+      
+      console.log(`Scratched: ${scratchedPercentage.toFixed(1)}% (${this.scratchedCells.size}/${totalCells} cells)`)
+      
+      // Consider "complete" when 70% is scratched (adjust this threshold as needed)
+      if (scratchedPercentage >= 100 && !this.isComplete) {
+        this.isComplete = true
+        this.onScratchComplete()
+      }
+
+      return scratchedPercentage
+    },
+
+    onScratchComplete() {
+      console.log('Scratch card completed!')
+      // Auto-reveal remaining areas
+      this.revealCanvas.clearRect(0, 0, this.reveal.width, this.reveal.height)
+      // Emit completion event
+      this.$emit('scratchComplete')
+      alert('complete')
     }
-
-    const scratchedPercentage = (transparentPixels / totalPixels) * 100
-    
-    // Consider "complete" when 70-80% is scratched
-    if (scratchedPercentage >= 75) {
-      this.onScratchComplete()
-    }
-
-    return scratchedPercentage
-  },
-
-  onScratchComplete() {
-    console.log('Scratch card completed!')
-    // Auto-reveal remaining areas
-    this.revealCanvas.clearRect(0, 0, this.reveal.width, this.reveal.height)
-    // Emit completion event
-    this.$emit('scratchComplete')
-    alert('complete')
   }
-  
 }
 </script>
 
