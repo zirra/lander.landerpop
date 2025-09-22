@@ -173,6 +173,7 @@ export default {
     this.revealCanvas.clearRect(0, 0, this.reveal.width, this.reveal.height)
     // Emit completion event
     this.$emit('scratchComplete')
+    alert('complete')
   }
   
 }
