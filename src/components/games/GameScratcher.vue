@@ -131,7 +131,7 @@ export default {
       }
       
       // Mark grid cells affected by this brush stroke
-      this.markGridCells(mouseX, mouseY - 50, brushRadius)
+      this.markGridCells(mouseX, mouseY - 50, brushRadius, 30)
       
       revealCanvas.beginPath()
       revealCanvas.arc(mouseX, mouseY-50, brushRadius, 0, 2*Math.PI, true)
@@ -148,7 +148,7 @@ export default {
       }
       
       // Mark grid cells affected by this brush stroke
-      this.markGridCells(mouseX, mouseY, brushRadius)
+      this.markGridCells(mouseX, mouseY, brushRadius, 50)
       
       revealCanvas.beginPath()
       revealCanvas.arc(mouseX, mouseY, brushRadius, 0, 2*Math.PI, true)
