@@ -128,6 +128,7 @@ export default {
       revealCanvas.fillStyle = '#000'
       revealCanvas.globalCompositeOperation = "destination-out"
       revealCanvas.fill()
+      this.checkScratchProgress()
 		},
 
     drawDotTouch: (mouseX,mouseY,revealCanvas, brushRadius, rect) => {
@@ -140,8 +141,40 @@ export default {
       revealCanvas.fillStyle = '#000'
       revealCanvas.globalCompositeOperation = "destination-out"
       revealCanvas.fill()
+      this.checkScratchProgress()
 		}
+  },
+  checkScratchProgress() {
+    const imageData = this.revealCanvas.getImageData(0, 0, this.reveal.width, this.reveal.height)
+    const pixels = imageData.data
+    let transparentPixels = 0
+    let totalPixels = pixels.length / 4 // Each pixel has 4 values (RGBA)
+
+    // Count transparent pixels (alpha = 0)
+    for (let i = 3; i < pixels.length; i += 4) {
+      if (pixels[i] === 0) { // Alpha channel is 0 (transparent)
+        transparentPixels++
+      }
+    }
+
+    const scratchedPercentage = (transparentPixels / totalPixels) * 100
+    
+    // Consider "complete" when 70-80% is scratched
+    if (scratchedPercentage >= 75) {
+      this.onScratchComplete()
+    }
+
+    return scratchedPercentage
+  },
+
+  onScratchComplete() {
+    console.log('Scratch card completed!')
+    // Auto-reveal remaining areas
+    this.revealCanvas.clearRect(0, 0, this.reveal.width, this.reveal.height)
+    // Emit completion event
+    this.$emit('scratchComplete')
   }
+  
 }
 </script>
 
