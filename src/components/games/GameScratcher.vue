@@ -94,7 +94,7 @@ export default {
         this.img.alt = `Scratcher Overlay ${this.scratcher.scratchId}`
         
         this.img.onload = () => {
-          let prize = `${this.imageRoot}lpuEkSePpwewsvqsCtzvqRMz/reveal.png`
+          let prize = `${this.imageRoot}lpuEkSePpwewsvqsCtzvqRMz/reveal.png?t=${Date.now()}`
     
           this.revealCanvas.drawImage(this.img, 0, 0, this.reveal.width, this.reveal.height)
           this.revealMe = `visibility: visible; background-image: url('${prize}'); background-image: -webkit-image-set(url('${prize}') 1x, url('${prize}') 2x );`
