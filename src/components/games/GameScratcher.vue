@@ -158,7 +158,7 @@ export default {
       this.checkScratchProgress()
 		},
 
-    markGridCells(centerX, centerY, brushRadius) {
+    markGridCells(centerX, centerY, brushRadius, coverageAmount = 25) {
       const cellWidth = this.reveal.width / this.gridSize
       const cellHeight = this.reveal.height / this.gridSize
       
@@ -187,7 +187,7 @@ export default {
           // Only mark cells that are significantly covered by the brush
           if (distance <= brushRadius * 0.7) { // Cell center must be within 70% of brush radius
             const currentCoverage = this.scratchedCells.get(cellId) || 0
-            const newCoverage = Math.min(100, currentCoverage + 25) // Add 25% coverage per brush stroke
+            const newCoverage = Math.min(100, currentCoverage + coverageAmount)
             this.scratchedCells.set(cellId, newCoverage)
           }
         }
@@ -210,7 +210,7 @@ export default {
       console.log(`Scratched: ${scratchedPercentage.toFixed(1)}% (${fullyCoveredCells}/${totalCells} cells fully covered)`)
       
       // Consider "complete" when 80% of cells are fully covered
-      if (scratchedPercentage >= 73 && !this.isComplete) {
+      if (scratchedPercentage >= 80 && !this.isComplete) {
         this.isComplete = true
         this.onScratchComplete()
       }
