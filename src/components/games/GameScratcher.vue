@@ -210,7 +210,7 @@ export default {
       console.log(`Scratched: ${scratchedPercentage.toFixed(1)}% (${fullyCoveredCells}/${totalCells} cells fully covered)`)
       
       // Consider "complete" when 80% of cells are fully covered
-      if (scratchedPercentage >= 77 && !this.isComplete) {
+      if (scratchedPercentage >= 75 && !this.isComplete) {
         this.isComplete = true
         this.onScratchComplete()
       }
