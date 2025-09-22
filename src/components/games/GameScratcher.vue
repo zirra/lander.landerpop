@@ -33,8 +33,8 @@ export default {
     ticket: null,
     mygrid: [],
     revealMe: null,
-    scratchedCells: new Set(),
-    gridSize: 35,
+    scratchedCells: new Map(), // Changed to Map to track coverage amount
+    gridSize: 20, // Increased for better accuracy
     isComplete: false,
 
   }),
@@ -176,19 +176,41 @@ export default {
       for (let row = startRow; row <= endRow; row++) {
         for (let col = startCol; col <= endCol; col++) {
           const cellId = `${row}-${col}`
-          this.scratchedCells.add(cellId)
+          const cellCenterX = col * cellWidth + cellWidth / 2
+          const cellCenterY = row * cellHeight + cellHeight / 2
+          
+          // Calculate distance from brush center to cell center
+          const distance = Math.sqrt(
+            Math.pow(centerX - cellCenterX, 2) + Math.pow(centerY - cellCenterY, 2)
+          )
+          
+          // Only mark cells that are significantly covered by the brush
+          if (distance <= brushRadius * 0.7) { // Cell center must be within 70% of brush radius
+            const currentCoverage = this.scratchedCells.get(cellId) || 0
+            const newCoverage = Math.min(100, currentCoverage + 25) // Add 25% coverage per brush stroke
+            this.scratchedCells.set(cellId, newCoverage)
+          }
         }
       }
     },
 
     checkScratchProgress() {
       const totalCells = this.gridSize * this.gridSize
-      const scratchedPercentage = (this.scratchedCells.size / totalCells) * 100
+      let fullyCoveredCells = 0
       
-      console.log(`Scratched: ${scratchedPercentage.toFixed(1)}% (${this.scratchedCells.size}/${totalCells} cells)`)
+      // Count cells that are at least 75% covered
+      this.scratchedCells.forEach((coverage) => {
+        if (coverage >= 75) {
+          fullyCoveredCells++
+        }
+      })
       
-      // Consider "complete" when 70% is scratched (adjust this threshold as needed)
-      if (scratchedPercentage >= 100 && !this.isComplete) {
+      const scratchedPercentage = (fullyCoveredCells / totalCells) * 100
+      
+      console.log(`Scratched: ${scratchedPercentage.toFixed(1)}% (${fullyCoveredCells}/${totalCells} cells fully covered)`)
+      
+      // Consider "complete" when 80% of cells are fully covered
+      if (scratchedPercentage >= 77 && !this.isComplete) {
         this.isComplete = true
         this.onScratchComplete()
       }
