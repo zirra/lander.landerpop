@@ -68,8 +68,8 @@ export default {
       currentPhase: 'stopped', // 'accelerating', 'spinning', 'decelerating', 'stopped'
       
       // Spin configuration
-      minSpins: 3,
-      maxSpins: 6,
+      minSpins: 5,
+      maxSpins: 8,
       totalSpinDistance: 0,
       
       // Manual controls
@@ -83,8 +83,8 @@ export default {
     this.ctx = this.canvas.getContext('2d')
     this.wheel = new Image()
     this.wheel.onload = () => {
-      //this.currentRotation = Math.random() * 360
-      this.currentRotation = 0
+      this.currentRotation = Math.random() * 360
+      //this.currentRotation = 0
       this.drawWheel()
     }
     this.wheel.src = `${this.imageRoot}lpuEkSePpwewsvqsCtzvqRMz/${this.wheelImage}`
