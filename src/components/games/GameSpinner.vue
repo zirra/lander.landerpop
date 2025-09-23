@@ -221,6 +221,8 @@ export default {
 .mycanvas {
   display: block;
   margin: 0 auto;
+  width: 100%;
+  padding: 2%;
 }
 
 .game-container {
