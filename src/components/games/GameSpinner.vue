@@ -3,8 +3,8 @@
     <div class="spinner"
       :style="`background-image: url('${this.imageRoot}lpuEkSePpwewsvqsCtzvqRMz/${backDrop}');`">
       <canvas :id="gameId" 
-        :width="`${windowWidth* .9}`"
-        :height="`${windowWidth * .9}`"
+        :width="`${windowWidth* .85}`"
+        :height="`${windowWidth * .85}`"
         class="mycanvas">
       </canvas>
     </div>
