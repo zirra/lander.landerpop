@@ -14,6 +14,7 @@
     <div>Target Rotation: {{ targetRotation.toFixed(1) }}°</div>
     <div>Current Speed: {{ currentSpeed.toFixed(2) }}</div>
     <div>Phase: {{ currentPhase }}</div>
+    <div v-if="hasManualTarget" style="color: yellow;">Manual Target Active</div>
     <br/>
     <input v-model.number="manualRotation" placeholder="Manual rotation" />
     <button @click="setManualRotation">Set Rotation</button><br/>
@@ -68,9 +69,12 @@ export default {
       currentPhase: 'stopped', // 'accelerating', 'spinning', 'decelerating', 'stopped'
       
       // Spin configuration
-      minSpins: 5,
-      maxSpins: 8,
+      minSpins: 8,
+      maxSpins: 12,
       totalSpinDistance: 0,
+      
+      // Manual target tracking
+      hasManualTarget: false,
       
       // Manual controls
       manualRotation: 0,
@@ -98,13 +102,16 @@ export default {
       this.currentPhase = 'accelerating'
       this.currentSpeed = 0
       
-      // Calculate target: random position after multiple spins
-      const spins = this.minSpins + Math.random() * (this.maxSpins - this.minSpins)
-      const finalAngle = Math.random() * 360
-      this.targetRotation = this.currentRotation + (spins * 360) + finalAngle
+      // Only calculate new target if no manual target is set
+      if (!this.hasManualTarget) {
+        const spins = this.minSpins + Math.random() * (this.maxSpins - this.minSpins)
+        const finalAngle = Math.random() * 360
+        this.targetRotation = this.currentRotation + (spins * 360) + finalAngle
+      }
+      
       this.totalSpinDistance = this.targetRotation - this.currentRotation
       
-      console.log(`Starting spin: ${this.currentRotation.toFixed(1)}° → ${this.targetRotation.toFixed(1)}° (${spins.toFixed(1)} spins)`)
+      console.log(`Starting spin: ${this.currentRotation.toFixed(1)}° → ${this.targetRotation.toFixed(1)}° ${this.hasManualTarget ? '(Manual Target)' : '(Random Target)'}`)
       
       this.animate()
     },
@@ -154,6 +161,7 @@ export default {
       this.isSpinning = false
       this.currentPhase = 'stopped'
       this.currentSpeed = 0
+      this.hasManualTarget = false // Reset the flag after spin completes
       
       // Normalize rotation to 0-360 range for display
       const normalizedRotation = this.currentRotation % 360
@@ -199,7 +207,8 @@ export default {
     setTarget() {
       if (this.isSpinning) return
       this.targetRotation = this.manualTarget || 0
-      console.log(`Target set to: ${this.targetRotation}°`)
+      this.hasManualTarget = true // Set the flag
+      console.log(`Manual target set to: ${this.targetRotation}°`)
     }
   }
 }
