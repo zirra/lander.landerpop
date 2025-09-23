@@ -1,5 +1,5 @@
 <template>
-  <div class="game-spinner">
+  <div class="game-spinner" style="color:#fff;">
     <div class="spinner"
       :style="`background-image: url('${this.imageRoot}lpuEkSePpwewsvqsCtzvqRMz/${backDrop}');`">
       <canvas :id="gameId" 

@@ -218,7 +218,6 @@ export default {
         this.isComplete = true
         this.onScratchComplete()
       }
-
       return scratchedPercentage
     },
 
