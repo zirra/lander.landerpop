@@ -1,6 +1,6 @@
 <template>
-  <div class="canvasView">
-    <div class="game-container"
+  <div class="game-spinner">
+    <div class="spinner"
       :style="`background-image: url('${this.imageRoot}lpuEkSePpwewsvqsCtzvqRMz/${backDrop}');`">
       <canvas :id="gameId" 
         :width="`${windowWidth* .9}`"
@@ -31,7 +31,7 @@ export default {
   props: {
     gameId: {
       type: String,
-      default: 'test'
+      default: 'testa'
     },
     backDrop: {
       type: String,
@@ -83,8 +83,8 @@ export default {
     this.ctx = this.canvas.getContext('2d')
     this.wheel = new Image()
     this.wheel.onload = () => {
-      // Start with random rotation
-      this.currentRotation = Math.random() * 360
+      //this.currentRotation = Math.random() * 360
+      this.currentRotation = 0
       this.drawWheel()
     }
     this.wheel.src = `${this.imageRoot}lpuEkSePpwewsvqsCtzvqRMz/${this.wheelImage}`
@@ -180,13 +180,12 @@ export default {
       
       // Draw wheel centered
       this.ctx.drawImage(
-        this.wheel, 
-        -this.wheel.width / 2, 
-        -this.wheel.height / 2,
+        this.wheel,
+        -this.canvas.width / 2,
+        -this.canvas.height / 2,
         this.canvas.width,
-        this.canvas.width
+        this.canvas.height
       )
-      
       // Restore context
       this.ctx.restore()
     },
@@ -207,16 +206,27 @@ export default {
 </script>
 
 <style>
+
+.game-spinner {
+  width: 100%;
+}
+
+
+.spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .mycanvas {
-  margin: 15px 0 auto;
-  background-size: cover;
-  border: 2px solid #ccc;
+  display: block;
+  margin: 0 auto;
 }
 
 .game-container {
   display: flex;
   justify-content: center;
-  background-size: cover;
+  background-size: contain;
   background-position: center;
   padding: 20px;
 }
