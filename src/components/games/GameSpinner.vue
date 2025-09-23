@@ -35,7 +35,7 @@ export default {
     },
     backDrop: {
       type: String,
-      default: 'backdrop.png'
+      default: 'backdrop.png' + `?t=${Date.now()}`
     },
     wheelImage: {
       type: String,
@@ -216,6 +216,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  background-size:  contain;
 }
 
 .mycanvas {
