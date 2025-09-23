@@ -21,7 +21,7 @@
     <button @click="setTarget">Set Target</button><br/>
 
     <br/><br/>
-    <button @click="setMenuMode(true)">Close</button>
+  
   </div>
 </template>
 
