@@ -1,5 +1,25 @@
 <template>
-  <div class="game-spinner">
+  <div class="canvasView">
+    <div class="game-container"
+      :style="`background-image: url('${this.imageRoot}lpuEkSePpwewsvqsCtzvqRMz/${backDrop}');`">
+      <canvas :id="gameId" 
+        :width="`${windowWidth* .9}`"
+        :height="`${windowWidth * .9}`"
+        class="mycanvas">
+      </canvas>
+    </div>
+    <br/>
+    <button @click="startSpin" :disabled="isSpinning">Make Spin</button><br/><br/>
+    <div>Current Rotation: {{ currentRotation.toFixed(1) }}°</div>
+    <div>Target Rotation: {{ targetRotation.toFixed(1) }}°</div>
+    <div>Current Speed: {{ currentSpeed.toFixed(2) }}</div>
+    <div>Phase: {{ currentPhase }}</div>
+    <br/>
+    <input v-model.number="manualRotation" placeholder="Manual rotation" />
+    <button @click="setManualRotation">Set Rotation</button><br/>
+    <input v-model.number="manualTarget" placeholder="Target angle" />
+    <button @click="setTarget">Set Target</button><br/>
+
     <br/><br/>
     <button @click="setMenuMode(true)">Close</button>
   </div>
@@ -7,10 +27,208 @@
 
 <script>
 export default {
-  name: 'GameSpinner'
+  name: 'WheelSpin',
+  props: {
+    gameId: {
+      type: String,
+      default: 'test'
+    },
+    backDrop: {
+      type: String,
+      default: 'backdrop.png'
+    },
+    wheelImage: {
+      type: String,
+      default: `ColorWheelNos.png`
+    }
+  },
+  data () {
+    return {
+      // Canvas elements
+      canvas: null,
+      ctx: null,
+      wheel: null,
+      
+      // Animation state
+      isSpinning: false,
+      animateId: null,
+      
+      // Rotation tracking (in degrees)
+      currentRotation: 0,
+      targetRotation: 0,
+      
+      // Animation physics
+      currentSpeed: 0,
+      maxSpeed: 15,
+      acceleration: 0.8,
+      deceleration: 0.96,
+      minSpeed: 0.1,
+      
+      // Animation phases
+      currentPhase: 'stopped', // 'accelerating', 'spinning', 'decelerating', 'stopped'
+      
+      // Spin configuration
+      minSpins: 3,
+      maxSpins: 6,
+      totalSpinDistance: 0,
+      
+      // Manual controls
+      manualRotation: 0,
+      manualTarget: 90
+    }
+  },
+  
+  mounted () {
+    this.canvas = document.getElementById(this.gameId)
+    this.ctx = this.canvas.getContext('2d')
+    this.wheel = new Image()
+    this.wheel.onload = () => {
+      // Start with random rotation
+      this.currentRotation = Math.random() * 360
+      this.drawWheel()
+    }
+    this.wheel.src = `${this.imageRoot}lpuEkSePpwewsvqsCtzvqRMz/${this.wheelImage}`
+  },
+
+  methods: {
+    startSpin() {
+      if (this.isSpinning) return
+      
+      this.isSpinning = true
+      this.currentPhase = 'accelerating'
+      this.currentSpeed = 0
+      
+      // Calculate target: random position after multiple spins
+      const spins = this.minSpins + Math.random() * (this.maxSpins - this.minSpins)
+      const finalAngle = Math.random() * 360
+      this.targetRotation = this.currentRotation + (spins * 360) + finalAngle
+      this.totalSpinDistance = this.targetRotation - this.currentRotation
+      
+      console.log(`Starting spin: ${this.currentRotation.toFixed(1)}° → ${this.targetRotation.toFixed(1)}° (${spins.toFixed(1)} spins)`)
+      
+      this.animate()
+    },
+
+    animate() {
+      if (!this.isSpinning) return
+      
+      const remainingDistance = this.targetRotation - this.currentRotation
+      const distanceTraveled = this.totalSpinDistance - remainingDistance
+      const progressRatio = distanceTraveled / this.totalSpinDistance
+      
+      // Phase management
+      if (this.currentPhase === 'accelerating' && this.currentSpeed >= this.maxSpeed) {
+        this.currentPhase = 'spinning'
+      } else if (this.currentPhase === 'spinning' && progressRatio > 0.7) {
+        this.currentPhase = 'decelerating'
+      }
+      
+      // Speed control
+      if (this.currentPhase === 'accelerating') {
+        this.currentSpeed += this.acceleration
+        if (this.currentSpeed > this.maxSpeed) {
+          this.currentSpeed = this.maxSpeed
+        }
+      } else if (this.currentPhase === 'decelerating') {
+        // Smooth deceleration to target
+        const targetSpeed = Math.max(remainingDistance / 60, this.minSpeed)
+        this.currentSpeed = Math.max(this.currentSpeed * this.deceleration, targetSpeed)
+      }
+      
+      // Update rotation
+      this.currentRotation += this.currentSpeed
+      
+      // Check for completion
+      if (remainingDistance <= this.currentSpeed || this.currentSpeed < this.minSpeed) {
+        // Snap to target and stop
+        this.currentRotation = this.targetRotation
+        this.stopSpin()
+        return
+      }
+      
+      this.drawWheel()
+      this.animateId = requestAnimationFrame(() => this.animate())
+    },
+
+    stopSpin() {
+      this.isSpinning = false
+      this.currentPhase = 'stopped'
+      this.currentSpeed = 0
+      
+      // Normalize rotation to 0-360 range for display
+      const normalizedRotation = this.currentRotation % 360
+      console.log(`Spin completed at: ${normalizedRotation.toFixed(1)}°`)
+      
+      if (this.animateId) {
+        cancelAnimationFrame(this.animateId)
+        this.animateId = null
+      }
+      
+      this.drawWheel()
+    },
+
+    drawWheel() {
+      // Clear canvas
+      this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
+      
+      // Save context
+      this.ctx.save()
+      
+      // Move to center and rotate
+      this.ctx.translate(this.canvas.width / 2, this.canvas.height / 2)
+      this.ctx.rotate((this.currentRotation * Math.PI) / 180)
+      
+      // Draw wheel centered
+      this.ctx.drawImage(
+        this.wheel, 
+        -this.wheel.width / 2, 
+        -this.wheel.height / 2,
+        this.canvas.width,
+        this.canvas.width
+      )
+      
+      // Restore context
+      this.ctx.restore()
+    },
+
+    setManualRotation() {
+      if (this.isSpinning) return
+      this.currentRotation = this.manualRotation || 0
+      this.drawWheel()
+    },
+
+    setTarget() {
+      if (this.isSpinning) return
+      this.targetRotation = this.manualTarget || 0
+      console.log(`Target set to: ${this.targetRotation}°`)
+    }
+  }
 }
 </script>
 
 <style>
+.mycanvas {
+  margin: 15px 0 auto;
+  background-size: cover;
+  border: 2px solid #ccc;
+}
 
+.game-container {
+  display: flex;
+  justify-content: center;
+  background-size: cover;
+  background-position: center;
+  padding: 20px;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+input {
+  margin: 5px;
+  padding: 5px;
+  width: 100px;
+}
 </style>
