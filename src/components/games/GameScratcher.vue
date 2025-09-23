@@ -94,7 +94,7 @@ export default {
         this.img.alt = `Scratcher Overlay ${this.scratcher.scratchId}`
         
         this.img.onload = () => {
-          let prize = `${this.imageRoot}lpuEkSePpwewsvqsCtzvqRMz/reveal.png?t=${Date.now()}`
+          let prize = `${this.imageRoot}lpuEkSePpwewsvqsCtzvqRMz/reveal.png`
     
           this.revealCanvas.drawImage(this.img, 0, 0, this.reveal.width, this.reveal.height)
           this.revealMe = `visibility: visible; background-image: url('${prize}'); background-image: -webkit-image-set(url('${prize}') 1x, url('${prize}') 2x );`
@@ -131,7 +131,7 @@ export default {
       }
       
       // Mark grid cells affected by this brush stroke
-      this.markGridCells(mouseX, mouseY - 50, brushRadius, 30)
+      this.markGridCells(mouseX, mouseY - 50, brushRadius)
       
       revealCanvas.beginPath()
       revealCanvas.arc(mouseX, mouseY-50, brushRadius, 0, 2*Math.PI, true)
@@ -148,7 +148,7 @@ export default {
       }
       
       // Mark grid cells affected by this brush stroke
-      this.markGridCells(mouseX, mouseY, brushRadius, 50)
+      this.markGridCells(mouseX, mouseY, brushRadius)
       
       revealCanvas.beginPath()
       revealCanvas.arc(mouseX, mouseY, brushRadius, 0, 2*Math.PI, true)
@@ -207,10 +207,14 @@ export default {
       
       const scratchedPercentage = (fullyCoveredCells / totalCells) * 100
       
-      console.log(`Scratched: ${scratchedPercentage.toFixed(1)}% (${fullyCoveredCells}/${totalCells} cells fully covered)`)
+      // Different completion thresholds for mobile vs desktop
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+      const completionThreshold = isMobile ? 75 : 80
       
-      // Consider "complete" when 80% of cells are fully covered
-      if (scratchedPercentage >= 70 && !this.isComplete) {
+      console.log(`Scratched: ${scratchedPercentage.toFixed(1)}% (${fullyCoveredCells}/${totalCells} cells fully covered) - Threshold: ${completionThreshold}%`)
+      
+      // Consider "complete" when threshold is reached
+      if (scratchedPercentage >= completionThreshold && !this.isComplete) {
         this.isComplete = true
         this.onScratchComplete()
       }
