@@ -13,6 +13,7 @@
     <div>Current Rotation: {{ currentRotation.toFixed(1) }}°</div>
     <div>Target Rotation: {{ targetRotation.toFixed(1) }}°</div>
     <div>Current Speed: {{ currentSpeed.toFixed(2) }}</div>
+    <div>Normalized: {{ normalizedTarget }}</div>
     <div>Phase: {{ currentPhase }}</div>
     <div v-if="hasManualTarget" style="color: yellow;">Manual Target Active</div>
     <br/>
@@ -20,6 +21,8 @@
     <button @click="setManualRotation">Set Rotation</button><br/>
     <input v-model.number="manualTarget" placeholder="Target angle" />
     <button @click="setTarget">Set Target</button><br/>
+    <input v-model.number="manualOffset" placeholder="Wheel offset" />
+    <button @click="setOffset">Set Offset</button><br/>
 
     <br/><br/>
   
@@ -57,6 +60,8 @@ export default {
       // Rotation tracking (in degrees)
       currentRotation: 0,
       targetRotation: 0,
+      wheelOffset: 0, // Offset to account for wheel image's initial position
+      wheelImageOffset: 0, // Offset to account for how the wheel image is oriented
       
       // Animation physics
       currentSpeed: 0,
@@ -78,7 +83,15 @@ export default {
       
       // Manual controls
       manualRotation: 0,
-      manualTarget: 90
+      manualTarget: 90,
+      manualOffset: 0
+    }
+  },
+
+
+  computed: {
+    normalizedTarget() {
+      return (this.targetRotation % 360).toFixed(1)
     }
   },
   
@@ -87,8 +100,9 @@ export default {
     this.ctx = this.canvas.getContext('2d')
     this.wheel = new Image()
     this.wheel.onload = () => {
-      this.currentRotation = Math.random() * 360
-      //this.currentRotation = 0
+      // Set a random visual starting position
+      this.wheelOffset = 0
+      this.currentRotation = this.wheelOffset
       this.drawWheel()
     }
     this.wheel.src = `${this.imageRoot}lpuEkSePpwewsvqsCtzvqRMz/${this.wheelImage}`
@@ -97,22 +111,25 @@ export default {
   methods: {
     startSpin() {
       if (this.isSpinning) return
-      
+
+      // Reset wheel position to 0 before spinning
+      this.currentRotation = 0
+
       this.isSpinning = true
       this.currentPhase = 'accelerating'
       this.currentSpeed = 0
-      
+
       // Only calculate new target if no manual target is set
       if (!this.hasManualTarget) {
         const spins = this.minSpins + Math.random() * (this.maxSpins - this.minSpins)
         const finalAngle = Math.random() * 360
         this.targetRotation = this.currentRotation + (spins * 360) + finalAngle
       }
-      
+
       this.totalSpinDistance = this.targetRotation - this.currentRotation
-      
+
       console.log(`Starting spin: ${this.currentRotation.toFixed(1)}° → ${this.targetRotation.toFixed(1)}° ${this.hasManualTarget ? '(Manual Target)' : '(Random Target)'}`)
-      
+
       this.animate()
     },
 
@@ -206,9 +223,17 @@ export default {
 
     setTarget() {
       if (this.isSpinning) return
-      this.targetRotation = this.manualTarget || 0
-      this.hasManualTarget = true // Set the flag
-      console.log(`Manual target set to: ${this.targetRotation}°`)
+
+      // Use integer spins to ensure exact landing position
+      const spins = Math.floor(this.minSpins + Math.random() * (this.maxSpins - this.minSpins))
+      this.targetRotation = (spins * 360) + (this.manualTarget || 0)
+      this.hasManualTarget = true
+      console.log(`Target set to land at: ${this.manualTarget}° after ${spins} spins (total: ${this.targetRotation}°)`)
+    },
+
+    setOffset() {
+      this.wheelImageOffset = this.manualOffset || 0
+      console.log(`Wheel offset set to: ${this.wheelImageOffset}°`)
     }
   }
 }
