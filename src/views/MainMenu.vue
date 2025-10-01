@@ -9,13 +9,15 @@
       <ui-promocard 
        @click="setWidget({
           type: 'ui-game-holder',
-          game: 'game-scratcher'
+          game: 'game-scratcher',
+          content: 'Scratch Card Test'
         })"/>
       
       <ui-promocard 
        @click="setWidget({
           type: 'ui-game-holder',
-          game: 'game-spinner'
+          game: 'game-spinner',
+          content: 'Wheel Spin Test'
         })"/>
       
 
