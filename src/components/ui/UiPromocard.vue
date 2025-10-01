@@ -1,18 +1,12 @@
 <template>
   <div class="ui-promo-card">
-    Promo Prize Offer - Link to Game<br/>
-    {{ context.content }}
+    Promo Prize Offer - Link to Game
   </div>
 </template>
 
 <script>
 export default {
-  name: 'UiPromocard',
-  props: {
-    context: {
-      type: Object
-    }
-  }
+  name: 'UiPromocard'
 }
 </script>
 
